@@ -1,4 +1,4 @@
-# Requisito 1.
+from bs4 import BeautifulSoup
 import time
 import requests
 
@@ -19,8 +19,20 @@ def fetch(url):
 
 # Requisito 2
 def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    try:
+        soup = BeautifulSoup(html_content, "html.parser")
+        news_urls = []
+
+        articles = soup.find_all("article", class_="entry-preview")
+
+        for article in articles:
+            link = article.find("a", href=True)
+            if link:
+                news_urls.append(link["href"])
+        return news_urls
+    except Exception as e:
+        print(f"Erro ao fazer scrape: {e}")
+        return []
 
 
 # Requisito 3
