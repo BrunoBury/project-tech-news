@@ -1,7 +1,16 @@
+from typing import List, Tuple
+from tech_news.database import db
+
+
 # Requisito 7
-def search_by_title(title):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+def search_by_title(title: str) -> List[Tuple[str, str]]:
+    title = title.lower()
+    result = []
+
+    for news in db.news.find({"title": {"$regex": title, "$options": "i"}}):
+        result.append((news["title"], news["url"]))
+
+    return result
 
 
 # Requisito 8
